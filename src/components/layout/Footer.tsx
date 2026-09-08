@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { telHref, type ContactSettings } from '@/lib/site-settings';
 
-export function Footer() {
+export function Footer({ contact }: { contact: ContactSettings }) {
   return (
     <footer className="mt-12 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 md:mt-24">
       <div className="container-page py-10 md:py-16">
@@ -20,14 +21,16 @@ export function Footer() {
               and data-center components from Dell, HP, Lenovo, NVIDIA and more.
             </p>
             <div className="mt-6 space-y-2 text-sm text-ink-muted dark:text-gray-400">
-              <a href="mailto:sales@serverfactory.com" className="flex items-center gap-2 transition-colors hover:text-brand">
-                <Mail className="h-4 w-4 flex-shrink-0 text-brand" /> <span className="min-w-0 break-all">sales@serverfactory.com</span>
+              <a href={`mailto:${contact.email}`} className="flex items-center gap-2 transition-colors hover:text-brand">
+                <Mail className="h-4 w-4 flex-shrink-0 text-brand" /> <span className="min-w-0 break-all">{contact.email}</span>
               </a>
-              <a href="tel:+918040000000" className="flex items-center gap-2 transition-colors hover:text-brand">
-                <Phone className="h-4 w-4 flex-shrink-0 text-brand" /> +91 80 4000 0000
+              <a href={telHref(contact.phone)} className="flex items-center gap-2 transition-colors hover:text-brand">
+                <Phone className="h-4 w-4 flex-shrink-0 text-brand" /> {contact.phone}
               </a>
-              <Link href="/contact" className="flex items-center gap-2 transition-colors hover:text-brand">
-                <MapPin className="h-4 w-4 flex-shrink-0 text-brand" /> <span className="min-w-0">Bengaluru, Karnataka, India</span>
+              {/* items-start so a multi-line address keeps the pin against the first line */}
+              <Link href="/contact" className="flex items-start gap-2 transition-colors hover:text-brand">
+                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand" />
+                <span className="min-w-0 whitespace-pre-line">{contact.address}</span>
               </Link>
             </div>
           </div>

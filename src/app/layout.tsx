@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/components/cart/CartProvider';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import { getContactSettings } from '@/lib/site-settings';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -48,7 +49,9 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const contact = await getContactSettings();
+
   return (
     <html lang="en">
       <head>
@@ -77,7 +80,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               contactPoint: {
                 '@type': 'ContactPoint',
                 contactType: 'Sales',
-                email: 'sales@serverfactory.com',
+                email: contact.email,
+                telephone: contact.phone,
                 areaServed: 'IN',
               },
             }),
@@ -89,7 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CartProvider>
             <Navbar />
             <main className="min-h-[70vh]">{children}</main>
-            <Footer />
+            <Footer contact={contact} />
           </CartProvider>
         </ThemeProvider>
       </body>
