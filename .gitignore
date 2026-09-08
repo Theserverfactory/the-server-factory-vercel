@@ -12,3 +12,6 @@ dist/
 coverage/
 prisma/dev.db
 prisma/migrations/dev/
+
+# Local database snapshots — contain user records and password hashes
+db-backup-*.json
