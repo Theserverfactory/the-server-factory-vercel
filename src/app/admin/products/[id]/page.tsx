@@ -48,7 +48,11 @@ export default async function EditProductPage({ params }: { params: { id: string
           categoryId: product.categoryId,
           metaTitle: product.metaTitle ?? '',
           metaDescription: product.metaDescription ?? '',
-          imageUrl: product.images[0]?.url ?? '',
+          images: product.images.map((img) => ({
+            url: img.url,
+            publicId: img.publicId,
+            alt: img.alt,
+          })),
         }}
       />
 

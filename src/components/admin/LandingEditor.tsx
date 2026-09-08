@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, Trash2, Eye, EyeOff, ArrowUp, ArrowDown, Plus } from 'lucide-react';
+import { HeroSlidesEditor } from './HeroSlidesEditor';
 
 type Block = {
   id: string;
@@ -162,6 +163,10 @@ function BlockEditor({ block, onSave }: { block: Block; onSave: (data: any) => v
     }
   }
 
+  // Hero carousels are the only blocks carrying images, so they get a real
+  // editor with upload instead of hand-edited JSON.
+  const isHero = block.type === 'HERO_CAROUSEL';
+
   return (
     <div>
       {/* Section background colour */}
@@ -190,21 +195,30 @@ function BlockEditor({ block, onSave }: { block: Block; onSave: (data: any) => v
         )}
       </div>
 
-      <p className="mb-2 text-xs text-ink-muted">
-        Edit the data payload below. Refer to the README for schema of each block type.
-      </p>
-      <textarea
-        value={json}
-        onChange={(e) => setJson(e.target.value)}
-        rows={8}
-        className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-xs outline-none focus:border-brand focus:bg-white"
-      />
-      <div className="mt-2 flex items-center gap-3">
-        <button onClick={handleSave} className="btn-brand text-sm">
-          <Save className="h-3.5 w-3.5" /> Save
-        </button>
-        {err && <span className="text-sm text-red-600">{err}</span>}
-      </div>
+      {isHero ? (
+        <HeroSlidesEditor
+          slides={Array.isArray(restData.slides) ? restData.slides : []}
+          onSave={(slides) => onSave(sectionBg ? { ...restData, slides, sectionBg } : { ...restData, slides })}
+        />
+      ) : (
+        <>
+          <p className="mb-2 text-xs text-ink-muted">
+            Edit the data payload below. Refer to the README for schema of each block type.
+          </p>
+          <textarea
+            value={json}
+            onChange={(e) => setJson(e.target.value)}
+            rows={8}
+            className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-xs outline-none focus:border-brand focus:bg-white"
+          />
+          <div className="mt-2 flex items-center gap-3">
+            <button onClick={handleSave} className="btn-brand text-sm">
+              <Save className="h-3.5 w-3.5" /> Save
+            </button>
+            {err && <span className="text-sm text-red-600">{err}</span>}
+          </div>
+        </>
+      )}
     </div>
   );
 }

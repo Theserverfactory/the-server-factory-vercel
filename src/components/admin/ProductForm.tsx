@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, Trash2 } from 'lucide-react';
+import { ProductImageManager, type ProductImageInput } from './ProductImageManager';
 
 type Category = { id: string; name: string };
 type ProductData = {
@@ -20,7 +21,7 @@ type ProductData = {
   categoryId: string;
   metaTitle: string;
   metaDescription: string;
-  imageUrl: string;
+  images: ProductImageInput[];
 };
 
 export function ProductForm({ categories, product }: { categories: Category[]; product?: ProductData }) {
@@ -29,7 +30,7 @@ export function ProductForm({ categories, product }: { categories: Category[]; p
   const [form, setForm] = useState<ProductData>(product ?? {
     sku: '', name: '', slug: '', brand: '', shortDesc: '', description: '',
     basePrice: 0, stock: 0, isActive: true, isFeatured: false,
-    categoryId: categories[0]?.id ?? '', metaTitle: '', metaDescription: '', imageUrl: '',
+    categoryId: categories[0]?.id ?? '', metaTitle: '', metaDescription: '', images: [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -91,7 +92,6 @@ export function ProductForm({ categories, product }: { categories: Category[]; p
           </div>
           <Field label="Base Price (₹)" type="number" value={String(form.basePrice)} onChange={(v) => setForm({ ...form, basePrice: Number(v) })} required />
           <Field label="Stock" type="number" value={String(form.stock)} onChange={(v) => setForm({ ...form, stock: Number(v) })} />
-          <Field label="Image URL" value={form.imageUrl} onChange={(v) => setForm({ ...form, imageUrl: v })} />
         </div>
         <div className="mt-4">
           <Field label="Short Description" value={form.shortDesc} onChange={(v) => setForm({ ...form, shortDesc: v })} />
@@ -115,6 +115,13 @@ export function ProductForm({ categories, product }: { categories: Category[]; p
             <span className="text-sm">Featured on homepage</span>
           </label>
         </div>
+      </div>
+
+      <div className="card p-6">
+        <ProductImageManager
+          images={form.images}
+          onChange={(images) => setForm({ ...form, images })}
+        />
       </div>
 
       <div className="card p-6">

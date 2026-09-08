@@ -17,7 +17,15 @@ const schema = z.object({
   categoryId: z.string(),
   metaTitle: z.string().optional(),
   metaDescription: z.string().optional(),
-  imageUrl: z.string().optional(),
+  images: z
+    .array(
+      z.object({
+        url: z.string().min(1),
+        publicId: z.string().nullable().optional(),
+        alt: z.string().nullable().optional(),
+      })
+    )
+    .optional(),
 });
 
 export async function POST(req: Request) {
@@ -29,12 +37,24 @@ export async function POST(req: Request) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
 
-    const { imageUrl, ...data } = parsed.data;
+    const { images, ...data } = parsed.data;
 
     const product = await prisma.product.create({
       data: {
         ...data,
-        ...(imageUrl ? { images: { create: [{ url: imageUrl, sortOrder: 0 }] } } : {}),
+        ...(images?.length
+          ? {
+              // Array order is the display order; index 0 is the primary image.
+              images: {
+                create: images.map((img, i) => ({
+                  url: img.url,
+                  publicId: img.publicId ?? null,
+                  alt: img.alt || null,
+                  sortOrder: i,
+                })),
+              },
+            }
+          : {}),
       },
     });
     return NextResponse.json({ product });
