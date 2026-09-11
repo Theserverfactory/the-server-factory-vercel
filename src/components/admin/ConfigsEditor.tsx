@@ -251,9 +251,12 @@ function Toggle({
           checked ? 'bg-brand' : 'bg-gray-300 dark:bg-gray-600'
         )}
       >
+        {/* left-0 is load-bearing: without it the knob falls back to its static
+            position, and a button's default text-align:center starts it 12px in,
+            so the "on" state pushed it past the right edge of the track. */}
         <span
           className={cn(
-            'absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform',
+            'absolute left-0 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform',
             checked ? 'translate-x-[22px]' : 'translate-x-0.5'
           )}
         />
