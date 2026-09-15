@@ -5,6 +5,8 @@ import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/components/cart/CartProvider';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { getContactSettings } from '@/lib/site-settings';
+import { isComingSoon } from '@/lib/coming-soon';
+import { ComingSoonHeader, ComingSoonFooter } from '@/components/layout/ComingSoonChrome';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -51,6 +53,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const contact = await getContactSettings();
+  const comingSoon = isComingSoon();
 
   return (
     <html lang="en">
@@ -91,9 +94,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="font-sans">
         <ThemeProvider>
           <CartProvider>
-            <Navbar />
+            {/* The full nav links to categories, search and cart — all gated
+                pre-launch — so it's swapped for a two-link header. */}
+            {comingSoon ? <ComingSoonHeader /> : <Navbar />}
             <main className="min-h-[70vh]">{children}</main>
-            <Footer contact={contact} />
+            {comingSoon ? <ComingSoonFooter /> : <Footer contact={contact} />}
           </CartProvider>
         </ThemeProvider>
       </body>

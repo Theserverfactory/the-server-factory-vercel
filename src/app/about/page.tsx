@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CheckCircle2, Server, Shield, Truck, Users } from 'lucide-react';
+import { isComingSoon } from '@/lib/coming-soon';
+import { getContactSettings } from '@/lib/site-settings';
 
 export const metadata: Metadata = {
   title: 'About ServerFactory — Enterprise Server Specialists in India',
@@ -9,7 +11,10 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const comingSoon = isComingSoon();
+  const contact = await getContactSettings();
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 md:py-16 lg:px-8">
       <div className="text-center">
@@ -67,17 +72,31 @@ export default function AboutPage() {
       </section>
 
       <section className="mt-12 overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 to-brand-400 px-5 py-10 text-center text-white shadow-brand sm:rounded-3xl sm:px-8 sm:py-12 md:mt-24 md:px-16 md:py-16">
-        <h2 className="heading-section font-display font-extrabold">Ready to build your server?</h2>
+        <h2 className="heading-section font-display font-extrabold">
+          {comingSoon ? 'Want to talk before we launch?' : 'Ready to build your server?'}
+        </h2>
         <p className="mx-auto mt-4 max-w-2xl text-sm text-white/90 sm:text-base">
-          Start configuring from 60+ enterprise models, or talk to an engineer for custom requirements.
+          {comingSoon
+            ? 'The store opens shortly. In the meantime our engineers are happy to spec a machine for your workload.'
+            : 'Start configuring from 60+ enterprise models, or talk to an engineer for custom requirements.'}
         </p>
         <div className="mt-6 flex flex-col justify-center gap-3 xs:flex-row xs:flex-wrap sm:mt-8">
-          <Link href="/category/servers" className="rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 transition hover:scale-105 sm:px-8 sm:text-base">
-            Shop Servers
-          </Link>
-          <Link href="/contact" className="rounded-full border-2 border-white px-6 py-3 text-sm font-bold text-white transition hover:bg-white hover:text-brand-700 sm:px-8 sm:text-base">
-            Talk to an engineer
-          </Link>
+          {/* Pre-launch both the catalogue and /contact are gated, so point at
+              email instead of buttons that would bounce to the holding page. */}
+          {comingSoon ? (
+            <a href={`mailto:${contact.email}`} className="rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 transition hover:scale-105 sm:px-8 sm:text-base">
+              Email us
+            </a>
+          ) : (
+            <>
+              <Link href="/category/servers" className="rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-700 transition hover:scale-105 sm:px-8 sm:text-base">
+                Shop Servers
+              </Link>
+              <Link href="/contact" className="rounded-full border-2 border-white px-6 py-3 text-sm font-bold text-white transition hover:bg-white hover:text-brand-700 sm:px-8 sm:text-base">
+                Talk to an engineer
+              </Link>
+            </>
+          )}
         </div>
       </section>
     </div>
