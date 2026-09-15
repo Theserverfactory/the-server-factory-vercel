@@ -4,6 +4,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  // Netlify builds on Ubuntu but runs functions on AWS Lambda, so the engine
+  // generated at build time doesn't match the runtime unless we ask for it.
+  // Both RHEL targets are listed because the OpenSSL version depends on the
+  // Lambda Node runtime (18 = AL2/1.0.x, 20+ = AL2023/3.0.x).
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

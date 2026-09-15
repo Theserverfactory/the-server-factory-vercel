@@ -1,0 +1,28 @@
+[build]
+  command = "npm run build"
+  # The Next.js runtime plugin reads .next and turns it into Netlify
+  # Functions + edge functions; don't point this at `out`.
+  publish = ".next"
+
+[build.environment]
+  # Node 20 runs on Amazon Linux 2023 (OpenSSL 3), which is why
+  # prisma/schema.prisma lists rhel-openssl-3.0.x among its binaryTargets.
+  NODE_VERSION = "20"
+  # Prisma downloads engines at install time; keep them for the build.
+  PRISMA_CLI_BINARY_TARGETS = "native,rhel-openssl-1.0.x,rhel-openssl-3.0.x"
+
+[[plugins]]
+  # Provides SSR, ISR, image optimisation and Next middleware on Netlify.
+  package = "@netlify/plugin-nextjs"
+
+# Deploy previews and branch builds should never be indexed — only the
+# production domain should appear in search results.
+[[context.deploy-preview.headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex"
+
+[[context.branch-deploy.headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex"
