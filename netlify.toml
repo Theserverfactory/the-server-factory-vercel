@@ -13,6 +13,17 @@
   # install with "Unknown binaryTarget native".
   NODE_VERSION = "20"
 
+  # Netlify's secrets scanner flags any env value it finds in build output.
+  # These are public by construction, so finding them is expected, not a leak:
+  #   NEXT_PUBLIC_* — Next inlines these into the browser bundle by design
+  #   AUTH_URL / NEXTAUTH_URL / NEXT_PUBLIC_SITE_URL — the site's own address,
+  #     which necessarily appears in canonical tags, OG tags and the sitemap
+  #
+  # Scanning stays ON for everything else. AUTH_SECRET, DATABASE_URL,
+  # CLOUDINARY_API_KEY/SECRET and ADMIN_PASSWORD are still checked, which is
+  # the reason not to reach for SECRETS_SCAN_ENABLED=false here.
+  SECRETS_SCAN_OMIT_KEYS = "AUTH_URL,NEXTAUTH_URL,NEXT_PUBLIC_SITE_URL,NEXT_PUBLIC_SITE_NAME,NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,NEXT_PUBLIC_GOOGLE_ENABLED"
+
 [[plugins]]
   # Provides SSR, ISR, image optimisation and Next middleware on Netlify.
   package = "@netlify/plugin-nextjs"
