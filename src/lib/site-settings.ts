@@ -56,7 +56,7 @@ export type ContactSettings = {
 export const CONTACT_SETTINGS_KEY = 'contact';
 
 export const CONTACT_DEFAULTS: ContactSettings = {
-  email: 'sales@serverfactory.com',
+  email: 'admin@theserverfactory.com',
   phone: '+91 80 4000 0000',
   address: 'Bengaluru, Karnataka, India',
 };

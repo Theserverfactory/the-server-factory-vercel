@@ -79,7 +79,7 @@ npm run db:seed
 
 > **Note**: If you're upgrading from a previous version that didn't have the `ProductTier` tables, run `npx prisma db push` (non-destructive) or `npx prisma migrate dev --name add_tiers` (creates a migration) to sync the schema.
 
-The seed creates an admin user using `ADMIN_EMAIL` and `ADMIN_PASSWORD` from your env (defaults: `admin@serverfactory.com` / `admin12345`).
+The seed creates an admin user using `ADMIN_EMAIL` and `ADMIN_PASSWORD` from your env (defaults: `admin@theserverfactory.com` / `admin12345`).
 
 ### 4. Run the dev server
 
@@ -281,7 +281,7 @@ Categories support unlimited nesting depth via a self-referencing `parentId` on 
 ### Logging in
 
 1. Go to `/login`.
-2. Enter admin credentials (default `admin@serverfactory.com` / the password from your env).
+2. Enter admin credentials (default `admin@theserverfactory.com` / the password from your env).
 3. After login you'll be redirected to `/account`. Click the account icon in the navbar to reach `/admin`.
 
 ### Dashboard

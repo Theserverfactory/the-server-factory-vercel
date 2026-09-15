@@ -25,7 +25,7 @@ async function main() {
   console.log('🌱 Seeding ServerFactory catalogue...\n');
 
   // ─── Admin user ──────────────────────────
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@serverfactory.com';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@theserverfactory.com';
   const adminPassword = process.env.ADMIN_PASSWORD || 'admin12345';
   const hash = await bcrypt.hash(adminPassword, 10);
 
@@ -204,7 +204,7 @@ async function main() {
       data: {
         key: 'contact',
         value: {
-          email: 'sales@serverfactory.com',
+          email: 'admin@theserverfactory.com',
           phone: '+91 80 4000 0000',
           address: 'Bengaluru, Karnataka, India',
         },
