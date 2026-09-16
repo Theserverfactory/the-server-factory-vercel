@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { CheckCircle2, Server, Shield, Truck, Users } from 'lucide-react';
 import { isComingSoon } from '@/lib/coming-soon';
 import { getContactSettings } from '@/lib/site-settings';
+import { PhotoBackdrop } from '@/components/layout/PhotoBackdrop';
 
 export const metadata: Metadata = {
   title: 'About ServerFactory — Enterprise Server Specialists in India',
@@ -17,14 +18,25 @@ export default async function AboutPage() {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 md:py-16 lg:px-8">
-      <div className="text-center">
-        <h1 className="heading-hero font-display font-extrabold">
-          About <span className="text-brand">ServerFactory</span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-base text-ink-muted sm:mt-6 sm:text-lg">
-          We build India&apos;s most transparent marketplace for enterprise hardware — Dell, HP, Lenovo, NVIDIA and more,
-          with fully customisable configurations and honest pricing.
-        </p>
+      {/*
+        Full-bleed band: the negative margins cancel the page shell's padding so
+        the photo runs edge to edge, then the padding is re-applied inside.
+
+        Backdrop is scoped to this header rather than the whole page — the body
+        below is dense text, and a photo behind all of it would cost readability
+        for no benefit.
+      */}
+      <div className="relative -mx-4 -mt-10 px-4 pb-16 pt-14 sm:-mx-6 sm:px-6 md:-mt-16 md:pb-24 md:pt-24 lg:-mx-8 lg:px-8">
+        <PhotoBackdrop variant="header" priority />
+        <div className="relative text-center">
+          <h1 className="heading-hero font-display font-extrabold">
+            About <span className="text-brand">ServerFactory</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-base text-ink-muted sm:mt-6 sm:text-lg">
+            We build India&apos;s most transparent marketplace for enterprise hardware — Dell, HP, Lenovo, NVIDIA and more,
+            with fully customisable configurations and honest pricing.
+          </p>
+        </div>
       </div>
 
       <section className="mt-12 grid gap-8 md:mt-20 md:grid-cols-2">

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
 import { getContactSettings, telHref } from '@/lib/site-settings';
+import { PhotoBackdrop } from '@/components/layout/PhotoBackdrop';
 
 /**
  * Pre-launch holding page. Contact details come from the same admin-editable
@@ -11,15 +12,7 @@ export async function ComingSoon() {
 
   return (
     <div className="relative flex min-h-[calc(100vh-8rem)] items-center overflow-hidden">
-      {/* Soft brand wash behind the content */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.07] dark:opacity-[0.12]"
-        style={{
-          backgroundImage:
-            'radial-gradient(60rem 30rem at 15% -10%, var(--brand), transparent 60%), radial-gradient(45rem 25rem at 110% 20%, var(--brand), transparent 55%)',
-        }}
-      />
+      <PhotoBackdrop variant="full" priority />
 
       <div className="container-page relative py-16 md:py-24">
         <div className="mx-auto max-w-3xl text-center">
