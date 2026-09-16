@@ -99,7 +99,18 @@ export function ImageUploader({
         accept={ACCEPTED.join(',')}
         multiple={multiple}
         onChange={(e) => handleFiles(e.target.files)}
-        className="hidden"
+        /*
+         * Visually hidden, but still rendered. `display: none` (Tailwind's
+         * `hidden`) looks equivalent and is not: Safari silently ignores a
+         * programmatic .click() on a file input that isn't in the render tree,
+         * so the picker never opens and nothing at all happens.
+         *
+         * Hidden from assistive tech too — the button beside it is the real,
+         * labelled control, so this would only be a duplicate tab stop.
+         */
+        className="sr-only"
+        tabIndex={-1}
+        aria-hidden="true"
       />
       <button
         type="button"
