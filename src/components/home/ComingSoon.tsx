@@ -1,15 +1,11 @@
-import Link from 'next/link';
-import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
-import { getContactSettings, telHref } from '@/lib/site-settings';
 import { PhotoBackdrop } from '@/components/layout/PhotoBackdrop';
 
 /**
- * Pre-launch holding page. Contact details come from the same admin-editable
- * setting the footer uses, so there's nothing extra to keep in sync.
+ * Pre-launch holding page. Deliberately just the badge, wordmark and one line
+ * of copy — contact details sit in the footer chrome rather than being
+ * repeated in the body.
  */
-export async function ComingSoon() {
-  const contact = await getContactSettings();
-
+export function ComingSoon() {
   return (
     <div className="relative flex min-h-[calc(100vh-8rem)] items-center overflow-hidden">
       <PhotoBackdrop variant="full" priority />
@@ -34,45 +30,8 @@ export async function ComingSoon() {
             data-centre components — Dell, HPE, HP, Lenovo and more. We&apos;re putting the finishing
             touches to the store.
           </p>
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/about" className="btn-brand">
-              About us <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a href={`mailto:${contact.email}`} className="btn-outline">
-              <Mail className="h-4 w-4" /> Get in touch
-            </a>
-          </div>
-
-          <div className="mx-auto mt-12 grid max-w-2xl gap-3 sm:grid-cols-3">
-            <ContactCard icon={Mail} label="Email" value={contact.email} href={`mailto:${contact.email}`} />
-            <ContactCard icon={Phone} label="Phone" value={contact.phone} href={telHref(contact.phone)} />
-            <ContactCard icon={MapPin} label="Address" value={contact.address} />
-          </div>
         </div>
       </div>
     </div>
   );
-}
-
-function ContactCard({
-  icon: Icon, label, value, href,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-  href?: string;
-}) {
-  const body = (
-    <div className="card h-full p-4 text-center transition hover:border-brand">
-      <Icon className="mx-auto h-5 w-5 text-brand" />
-      <p className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-ink-muted dark:text-gray-400">
-        {label}
-      </p>
-      <p className="mt-1 whitespace-pre-line break-words text-sm font-semibold text-ink dark:text-gray-100">
-        {value}
-      </p>
-    </div>
-  );
-  return href ? <a href={href} className="block h-full">{body}</a> : body;
 }
