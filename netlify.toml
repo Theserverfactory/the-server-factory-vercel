@@ -18,11 +18,16 @@
   #   NEXT_PUBLIC_* — Next inlines these into the browser bundle by design
   #   AUTH_URL / NEXTAUTH_URL / NEXT_PUBLIC_SITE_URL — the site's own address,
   #     which necessarily appears in canonical tags, OG tags and the sitemap
+  #   CLOUDINARY_CLOUD_NAME — sits in the middle of every delivery URL
+  #     (res.cloudinary.com/<cloud_name>/image/upload/...), so it lands in the
+  #     prerendered HTML of any page showing an uploaded image. It identifies
+  #     the account; it does not authorise anything.
   #
   # Scanning stays ON for everything else. AUTH_SECRET, DATABASE_URL,
   # CLOUDINARY_API_KEY/SECRET and ADMIN_PASSWORD are still checked, which is
-  # the reason not to reach for SECRETS_SCAN_ENABLED=false here.
-  SECRETS_SCAN_OMIT_KEYS = "AUTH_URL,NEXTAUTH_URL,NEXT_PUBLIC_SITE_URL,NEXT_PUBLIC_SITE_NAME,NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,NEXT_PUBLIC_GOOGLE_ENABLED"
+  # the reason not to reach for SECRETS_SCAN_ENABLED=false here. In particular
+  # the API key and secret are what actually gate uploads and deletions.
+  SECRETS_SCAN_OMIT_KEYS = "AUTH_URL,NEXTAUTH_URL,NEXT_PUBLIC_SITE_URL,NEXT_PUBLIC_SITE_NAME,CLOUDINARY_CLOUD_NAME,NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,NEXT_PUBLIC_GOOGLE_ENABLED"
 
 [[plugins]]
   # Provides SSR, ISR, image optimisation and Next middleware on Netlify.
